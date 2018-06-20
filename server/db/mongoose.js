@@ -5,7 +5,7 @@ if ( env === 'development') {
     connectionString = 'mongodb://localhost:27017/TodoApp';
 } else if (env === 'test') {
     connectionString = 'mongodb://localhost:27017/TodoAppTest';
-} else if (env === 'production') {
+} else {
     connectionString = 'mongodb://felipegs:159753feh@ds255320.mlab.com:55320/node-course';
 }
 
