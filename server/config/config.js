@@ -9,3 +9,15 @@ if ( env === 'development' || env === 'test') {
         process.env[key] = envConfig[key];
     })
 } 
+
+
+// if ( env === 'development') {
+//     process.env.PORT = 3000;
+//     process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoApp';
+// } else if (env === 'test') {
+//     process.env.PORT = 3000;
+//     process.env.MONGODB_URI = 'mongodb://localhost:27017/TodoAppTest';
+// } else if (env === 'production') {
+//     process.env.PORT = 3000;
+//     process.env.MONGODB_URI = 'mongodb://felipegs:159753feh@ds255320.mlab.com:55320/node-course';
+// }
