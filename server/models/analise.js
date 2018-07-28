@@ -22,6 +22,10 @@ var Analise = mongoose.model('Analise', {
     },
     gray: {
         type: Number        
+    },
+    _creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        require: true
     }
 });
 

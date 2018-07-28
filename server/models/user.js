@@ -23,7 +23,13 @@ var UserSchema = new mongoose.Schema({
         password: {
             type: String,
             require: true,
-            minlength: 6
+            minlength: 4
+        },
+        tipo: {
+            type: String,
+            enum: ['produtor', 'comprador'],
+            trim: true,
+            required: true
         },
         tokens: [{
             access: {
