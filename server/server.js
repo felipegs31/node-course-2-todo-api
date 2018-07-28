@@ -5,7 +5,7 @@ const {ObjectID} = require('mongodb')
 const _ = require('lodash');
 
 const {mongoose} = require('./db/mongoose');
-const {Todo} = require('./models/todo');
+const {Carga} = require('./models/carga');
 const {User} = require('./models/user');
 const {authenticate} = require('./middleware/authenticate');
 
@@ -14,93 +14,94 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
-app.post('/todos', authenticate, (req, res) => {
-    var todo = new Todo({
-        text: req.body.text,
+app.post('/cargas', authenticate, (req, res) => {
+    var carga = new Carga({
+        preco: req.body.preco,
         _creator: req.user._id
     });
 
-    todo.save().then((doc) => {
+    carga.save().then((doc) => {
         res.send(doc);
     }, (e) => {
         res.status(400).send(e);
     });
 });
 
-app.get('/todos', authenticate, (req,res) => {
-    Todo.find({
+app.get('/cargas', authenticate, (req,res) => {
+    Carga.find({
         _creator: req.user._id
-    }).then((todos)=> {
-        res.send({todos})
+    }).then((cargas)=> {
+        res.send({cargas})
     }, (e) => {
         res.status(400).send(e);
     })
 });
 
-app.get('/todos/:id', authenticate, (req, res) => {
+app.get('/cargas/:id', authenticate, (req, res) => {
     var id = req.params.id;
     //validate id using is valid
     if(!ObjectID.isValid(id)){
         return res.status(404).send();
     }
 
-    Todo.findOne({
+    Carga.findOne({
         _id: id,
         _creator: req.user._id
-    }).then((todo) => {
-        if(!todo) {
+    }).then((carga) => {
+        if(!carga) {
             return res.status(404).send();
         }
-        res.send({todo})
+        res.send({carga})
     }).catch((e) => {
         res.status(400).send(e)
     })
 })
 
-app.delete('/todos/:id', authenticate, (req, res) => {
+app.delete('/cargas/:id', authenticate, (req, res) => {
     var id = req.params.id;
     //validate id using is valid
     if(!ObjectID.isValid(id)){
         return res.status(404).send();
     }
 
-    Todo.findOneAndRemove({
+    Carga.findOneAndRemove({
         _id: id,
         _creator: req.user._id
-    }).then((todo) => {
-        if(!todo) {
+    }).then((carga) => {
+        if(!carga) {
             return res.status(404).send();
         }
-        res.send({todo})
+        res.send({carga})
     }).catch((e) => {
         res.status(400).send(e)
     })
 })
 
-app.patch('/todos/:id', authenticate, (req,res) => {
+app.patch('/cargas/:id', authenticate, (req,res) => {
     var id = req.params.id;
-    var body = _.pick(req.body, ['text', 'completed']);
+    //var body = _.pick(req.body, ['preco', 'completed']);
+    var body = _.pick(req.body, ['preco']);
 
     if(!ObjectID.isValid(id)){
         return res.status(404).send();
     }
 
-    if(_.isBoolean(body.completed) && body.completed) {
-        body.completedAt = new Date().getTime();
-    } else {
-        body.completed = false;
-        body.completedAt = null;
-    }
+    // if(_.isBoolean(body.completed) && body.completed) {
+    //     body.completedAt = new Date().getTime();
+    // } else {
+    //     body.completed = false;
+    //     body.completedAt = null;
+    // }
 
-    Todo.findOneAndUpdate({
+    Carga.findOneAndUpdate({
         _id: id,
         _creator: req.user._id        
     }, {$set: body}, {new: true})
-        .then((todo) => {
-            if(!todo){
+        .then((carga) => {
+            if(!carga){
                 return res.status(404).send();
             }
-            res.send({todo});
+            res.send({carga});
         }).catch((e) => {   
             res.status(400).send();
         })
