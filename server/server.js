@@ -16,7 +16,7 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    
+
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, x-auth");
     next();
 });
@@ -136,9 +136,8 @@ app.post('/cargas/:id/analises', authenticate, (req, res) => {
         _creator: req.user._id
     });
 
-    console.log('analise', analise);    
     analise.save().then((doc) => {
-        Carga.findOneAndUpdate({
+        Carga.findOne({
             _id: id
         }).then((carga) => {
             carga._analise.push(doc);
@@ -164,7 +163,6 @@ app.get('/cargas/:id/analises', authenticate, (req,res) => {
     })
     .populate('_analise')
     .then((carga) => {
-        console.log(carga)
         if(!carga) {
             return res.status(404).send();
         }
@@ -231,7 +229,6 @@ app.delete('/cargas/:idcarga/analises/:id', authenticate, (req, res) => {
         if(!analise) {
             return res.status(404).send();
         }        
-        console.log('chegou na carga');
         Carga.findOne({
             _id: idcarga
         }).then((carga) => {
@@ -239,7 +236,6 @@ app.delete('/cargas/:idcarga/analises/:id', authenticate, (req, res) => {
             if (index > -1) {
                 carga._analise.splice(index, 1);
             }
-            console.log('index', index);
             Carga.findOneAndUpdate({
                 _id: id
             }, {$set: {_analise: carga._analise}}, {new: true})
