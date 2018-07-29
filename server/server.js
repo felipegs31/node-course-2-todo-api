@@ -25,7 +25,8 @@ app.post('/cargas', authenticate, (req, res) => {
         peso: req.body.preco,
         _creator: req.user._id,
         grao: req.body.grao,
-        placa: req.body.placa
+        placa: req.body.placa,
+        nomeCarga: req.body.nomeCarga
     });
 
     carga.save().then((doc) => {

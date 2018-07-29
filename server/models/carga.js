@@ -15,6 +15,9 @@ var Carga = mongoose.model('Carga', {
     grao: {
         type: String
     },
+    nomeCarga: {
+        type: String
+    },
     _creator: {
         type: mongoose.Schema.Types.ObjectId,
         require: true
