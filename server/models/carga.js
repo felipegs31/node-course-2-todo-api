@@ -18,10 +18,10 @@ var Carga = mongoose.model('Carga', {
     nomeCarga: {
         type: String
     },
-    _creator: {
-        type: mongoose.Schema.Types.ObjectId,
-        require: true
-    },
+    _creator: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
     _analise: [{
         type: Schema.Types.ObjectId, 
         ref: 'Analise'

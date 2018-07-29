@@ -37,17 +37,30 @@ app.post('/cargas', authenticate, (req, res) => {
     });
 });
 
-app.get('/cargas', authenticate, (req,res) => {
+app.get('/cargas/me', authenticate, (req,res) => {
     Carga.find({
         _creator: req.user._id
     })
     .populate('_analise')
+    .populate('_creator')
     .then((cargas)=> {
         res.send({cargas})
     }, (e) => {
         res.status(400).send(e);
     })
 });
+
+app.get('/cargas/all', authenticate, (req,res) => {
+    Carga.find({})
+    .populate('_analise')
+    .populate('_creator')
+    .then((cargas)=> {
+        res.send({cargas})
+    }, (e) => {
+        res.status(400).send(e);
+    })
+});
+
 
 app.get('/cargas/:id', authenticate, (req, res) => {
     var id = req.params.id;
@@ -64,6 +77,38 @@ app.get('/cargas/:id', authenticate, (req, res) => {
             return res.status(404).send();
         }
         res.send({carga})
+    }).catch((e) => {
+        res.status(400).send(e)
+    })
+})
+
+app.get('/cargas/:id/incluir', authenticate, (req, res) => {
+    var id = req.params.id;
+    var userId = req.user._id;
+    //validate id using is valid
+    if(!ObjectID.isValid(id)){
+        return res.status(404).send();
+    }
+
+    Carga.findOne({
+        _id: id,
+    }).then((carga) => {
+        console.log('carga', carga)
+        if(!carga) {
+            return res.status(404).send();
+        }
+        console.log('userId', userId)
+        console.log('carga._creator', carga._creator)
+        
+        carga._creator.push(userId);
+        
+        console.log('carga', carga)
+        Carga.findOneAndUpdate({
+            _id: id
+        }, {$set: {_creator: carga._creator}},{new: true})
+        .then((cargaFinal) => {
+            res.send({cargaFinal});
+        })
     }).catch((e) => {
         res.status(400).send(e)
     })
@@ -143,8 +188,7 @@ app.post('/cargas/:id/analises', authenticate, (req, res) => {
             carga._analise.push(doc);
             Carga.findOneAndUpdate({
                 _id: id
-            }, {$set: {_analise: carga._analise}}, 
-            {new: true})
+            }, {$set: {_analise: carga._analise}},{new: true})
             .then((carga) => {
                 res.send({carga});
             })
