@@ -7,7 +7,7 @@ if ( env === 'development') {
 } else if (env === 'test') {
     connectionString = 'mongodb://localhost:27017/GranoTest';
 } else {
-    connectionString = 'mongodb://felipegs:159753feh@ds255320.mlab.com:55320/Grano';
+    connectionString = 'mongodb://felipegs:159753feh@ds255320.mlab.com:55320/grano';
 }
 
 mongoose.Promise = global.Promise;
