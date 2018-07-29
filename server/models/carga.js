@@ -6,8 +6,14 @@ var Carga = mongoose.model('Carga', {
         type: Date,
         default: Date.now
     },
-    preco: {
+    peso: {
         type: Number,
+    },
+    placa: {
+        type: String
+    },
+    grao: {
+        type: String
     },
     _creator: {
         type: mongoose.Schema.Types.ObjectId,

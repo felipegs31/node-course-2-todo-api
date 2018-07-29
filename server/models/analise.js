@@ -11,6 +11,9 @@ var Analise = mongoose.model('Analise', {
         type: Date,
         default: Date.now
     },
+    preco: {
+        type: Number
+    },
     red: {
         type: Number        
     },

@@ -22,8 +22,10 @@ app.use(function(req, res, next) {
   
 app.post('/cargas', authenticate, (req, res) => {
     var carga = new Carga({
-        preco: req.body.preco,
-        _creator: req.user._id
+        peso: req.body.preco,
+        _creator: req.user._id,
+        grao: req.body.grao,
+        placa: req.body.placa
     });
 
     carga.save().then((doc) => {
@@ -122,7 +124,7 @@ app.post('/cargas/:id/analises', authenticate, (req, res) => {
     var id = req.params.id;
 
     var analise = new Analise({
-        image: req.body.imagem,
+        imagem: req.body.imagem,
         qualidade: req.body.qualidade,
         data: req.body.data,
         red: req.body.red,
@@ -132,6 +134,7 @@ app.post('/cargas/:id/analises', authenticate, (req, res) => {
         _creator: req.user._id
     });
 
+    console.log('analise', analise);    
     analise.save().then((doc) => {
         Carga.findOneAndUpdate({
             _id: id
