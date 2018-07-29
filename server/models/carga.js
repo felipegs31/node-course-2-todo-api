@@ -7,7 +7,7 @@ var Carga = mongoose.model('Carga', {
         default: Date.now
     },
     peso: {
-        type: Number,
+        type: Number
     },
     placa: {
         type: String

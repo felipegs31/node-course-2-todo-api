@@ -23,7 +23,7 @@ app.use(function(req, res, next) {
   
 app.post('/cargas', authenticate, (req, res) => {
     var carga = new Carga({
-        peso: req.body.preco,
+        peso: req.body.peso,
         _creator: req.user._id,
         grao: req.body.grao,
         placa: req.body.placa,
@@ -178,6 +178,7 @@ app.post('/cargas/:id/analises', authenticate, (req, res) => {
         green: req.body.green,
         blue: req.body.blue,
         gray: req.body.gray,
+        preco: req.body.preco,
         _creator: req.user._id
     });
 
