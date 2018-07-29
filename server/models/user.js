@@ -25,10 +25,14 @@ var UserSchema = new mongoose.Schema({
             require: true,
             minlength: 4
         },
-        tipo: {
+        type: {
             type: String,
             enum: ['produtor', 'comprador'],
             trim: true,
+            required: true
+        },
+        name: {
+            type: String,
             required: true
         },
         tokens: [{

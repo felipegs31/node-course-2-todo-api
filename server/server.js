@@ -268,7 +268,7 @@ app.patch('/analises/:id', authenticate, (req,res) => {
 
 //Post /users
 app.post('/users', (req, res) => {
-    const body = _.pick(req.body, ['email', 'password', 'tipo']);
+    const body = _.pick(req.body, ['email', 'password', 'type','name']);
     const user = new User(body);
 
     user.save().then((cb) => {
@@ -278,7 +278,8 @@ app.post('/users', (req, res) => {
             token: token,
             email: user.email,
             password: user.password,
-            tipo: user.tipo
+            type: user.type,
+            name: user.name
         }
         res.header('x-auth', token).send(saida);
     }).catch((e) => {
@@ -297,7 +298,14 @@ app.post('/users/login', (req, res) => {
 
     User.findByCredentials(body.email, body.password).then((user) => {
         return user.generateAuthToken().then((token) => {
-            res.header('x-auth', token).send(user);            
+            var saida = {
+                token: token,
+                email: user.email,
+                password: user.password,
+                type: user.type,
+                name: user.name
+            }
+            res.header('x-auth', token).send(saida);            
         })
     }).catch((e) => {
         res.status(400).send(e);        
